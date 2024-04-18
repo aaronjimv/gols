@@ -48,7 +48,7 @@ type styleFileType struct {
 
 var mapStyleByFileType = map[int]styleFileType{
 	fileRegular:    {icon: "📄"},
-	fileDirectory:  {icon: "📂", color: "color.FgBlue", symbol: "/"},
+	fileDirectory:  {icon: "📁", color: "color.FgBlue", symbol: "/"},
 	fileExecutable: {icon: "🚀", color: "color.FgGreen", symbol: "*"},
 	fileCompress:   {icon: "📦", color: "color.FgRed"},
 	fileImage:      {icon: "📸", color: "color.FgMagenta"},
