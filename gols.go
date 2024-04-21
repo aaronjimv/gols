@@ -6,10 +6,10 @@ import (
 	"github.com/fatih/color"
 )
 
-// Windows os system
+// Windows os system.
 const Windows = "windows"
 
-// file types
+// file types.
 const (
 	fileRegular int = iota
 	fileDirectory
@@ -19,7 +19,7 @@ const (
 	fileLink
 )
 
-// file extensions
+// file extensions.
 const (
 	exe = ".exe"
 	deb = ".deb"
@@ -32,6 +32,7 @@ const (
 	gif = ".gif"
 )
 
+// represents a file in the directory.
 type file struct {
 	name             string
 	fileType         int
@@ -44,12 +45,14 @@ type file struct {
 	mode             string
 }
 
+// represents the style of a file based on its type.
 type styleFileType struct {
 	symbol string
 	color  color.Attribute
 	icon   string
 }
 
+// maps file types to their style.
 var mapStyleByFileType = map[int]styleFileType{
 	fileRegular:    {icon: "📄"},
 	fileDirectory:  {icon: "📁", color: color.FgBlue, symbol: "/"},
@@ -59,7 +62,7 @@ var mapStyleByFileType = map[int]styleFileType{
 	fileLink:       {icon: "🔗", color: color.FgCyan},
 }
 
-// colors
+// colors functions
 var (
 	blue    = color.New(color.FgBlue).Add(color.Bold).SprintFunc()
 	green   = color.New(color.FgGreen).Add(color.Bold).SprintFunc()

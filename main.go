@@ -30,19 +30,20 @@ func main() {
 
 	flag.Parse()
 
+	// Default path is current directory
 	path := flag.Arg(0)
-
 	if path == "" {
 		path = "."
 	}
 
+	// Read directory contents
 	dirs, err := os.ReadDir(path)
 	if err != nil {
 		panic(err)
 	}
 
+	// Process files and directories
 	fs := []file{}
-
 	for _, dir := range dirs {
 		isHidden := isHidden(dir.Name(), path)
 
@@ -69,6 +70,7 @@ func main() {
 		fs = append(fs, f)
 	}
 
+	// Sort files based on flags
 	if !*hasOrderBySize || !*hasOrderByTime {
 		orderByName(fs, *hasOrderReverse)
 	}
@@ -85,9 +87,11 @@ func main() {
 		*flagNumberRecords = len(fs)
 	}
 
+	// Display the list
 	printList(fs, *flagNumberRecords)
 }
 
+// generic sorting function for different types.
 func mySort[T constraints.Ordered](i, j T, isReverge bool) bool {
 	if isReverge {
 		return i > j
