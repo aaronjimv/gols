@@ -91,7 +91,7 @@ func main() {
 	printList(fs, *flagNumberRecords)
 }
 
-// generic sorting function for different types.
+// generic sorting function for ordered types
 func mySort[T constraints.Ordered](i, j T, isReverge bool) bool {
 	if isReverge {
 		return i > j
@@ -100,6 +100,7 @@ func mySort[T constraints.Ordered](i, j T, isReverge bool) bool {
 	return i < j
 }
 
+// Sort files by modification time
 func orderByTime(files []file, isReverge bool) {
 	sort.SliceStable(files, func(i, j int) bool {
 		return mySort(
@@ -110,6 +111,7 @@ func orderByTime(files []file, isReverge bool) {
 	})
 }
 
+// Sort files by name
 func orderByName(files []file, isReverge bool) {
 	sort.SliceStable(files, func(i, j int) bool {
 		return mySort(
@@ -120,6 +122,7 @@ func orderByName(files []file, isReverge bool) {
 	})
 }
 
+// Sort files by size
 func orderBySize(files []file, isReverge bool) {
 	sort.SliceStable(files, func(i, j int) bool {
 		return mySort(
@@ -130,6 +133,7 @@ func orderBySize(files []file, isReverge bool) {
 	})
 }
 
+// Print the file list with formatting
 func printList(fs []file, nRecords int) {
 	for _, file := range fs[:nRecords] {
 		style := mapStyleByFileType[file.fileType]
@@ -148,6 +152,7 @@ func printList(fs []file, nRecords int) {
 	}
 }
 
+// Get file information from a directory entry
 func getFile(dir fs.DirEntry, isHidden bool) (file, error) {
 	info, err := dir.Info()
 	if err != nil {
@@ -171,6 +176,7 @@ func getFile(dir fs.DirEntry, isHidden bool) (file, error) {
 	return f, nil
 }
 
+// Set the file type based on its properties
 func setFile(f *file) {
 	switch {
 	case isLink(*f):
@@ -188,6 +194,7 @@ func setFile(f *file) {
 	}
 }
 
+// Set the color of a file name based on its type
 func setColor(nameFile string, styleColor color.Attribute) string {
 	switch styleColor {
 	case color.FgBlue:
@@ -205,10 +212,12 @@ func setColor(nameFile string, styleColor color.Attribute) string {
 	return nameFile
 }
 
+// Check if a file is a link
 func isLink(f file) bool {
 	return strings.HasPrefix(strings.ToUpper(f.mode), "L")
 }
 
+// Check if a file is executable
 func isExec(f file) bool {
 	if runtime.GOOS == Windows {
 		return strings.HasSuffix(f.name, exe)
@@ -217,6 +226,7 @@ func isExec(f file) bool {
 	return strings.Contains(f.mode, "x")
 }
 
+// Check if a file is compressed
 func isCompress(f file) bool {
 	return strings.HasSuffix(f.name, zip) ||
 		strings.HasSuffix(f.name, gz) ||
@@ -225,12 +235,14 @@ func isCompress(f file) bool {
 		strings.HasSuffix(f.name, deb)
 }
 
+// Check if a file is an image
 func isImage(f file) bool {
 	return strings.HasSuffix(f.name, png) ||
 		strings.HasSuffix(f.name, jpg) ||
 		strings.HasSuffix(f.name, gif)
 }
 
+// Check if a file is hidden
 func isHidden(fileName, basePath string) bool {
 	filePath := path.Join(basePath, fileName)
 
@@ -241,6 +253,7 @@ func isHidden(fileName, basePath string) bool {
 	return fileinfo.IsHidden(filePath)
 }
 
+// Mark a hidden file with a yellow exclamation mark
 func markHidden(isHidden bool) string {
 	if !isHidden {
 		return ""
